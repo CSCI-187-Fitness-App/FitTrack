@@ -4,8 +4,6 @@ const Command = require("./Command.js");
 const Event = require("./Event.js");
 const config = require("../Data/config.json");
 
-
-
 class Client extends Discord.Client {
     constructor() {
         super({ 
