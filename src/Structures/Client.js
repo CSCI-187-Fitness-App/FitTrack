@@ -1,12 +1,24 @@
 const Discord = require("discord.js");
+const { GatewayIntentBits } = require('discord.js');
 const Command = require("./Command.js");
 const Event = require("./Event.js");
 const config = require("../Data/config.json");
-const intents = new Discord.Intents("32767");
+
+
 
 class Client extends Discord.Client {
     constructor() {
-        super({ intents, allowedMentions: { repliedUser: false } }); //don't ping user
+        super({ 
+            intents: [
+                GatewayIntentBits.Guilds,
+                GatewayIntentBits.GuildMessages,
+                GatewayIntentBits.MessageContent,
+                GatewayIntentBits.GuildMembers,
+            ],
+            allowedMentions: { 
+                repliedUser: false //don't ping user
+            } 
+        }); 
 
         /**
          * @type {Discord.Collection<string, Command>}
