@@ -2,8 +2,8 @@
   "name": "fittrack",
   "version": "1.0.0",
   "description": "Fitness tracker through Discord",
-  "main": "src/index.js",
-  "author": "CSCI 187",
+  "main": "index.js",
+  "author": "CSCI 187 FitTrack Group Fall 2022",
   "license": "ISC",
   "dependencies": {
     "discord.js": "^14.6.0"

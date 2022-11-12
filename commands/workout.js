@@ -1,11 +1,10 @@
-const Command = require("../Structures/Command.js");
-const {EmbedBuilder} = require("discord.js");
+const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 
-module.exports = new Command({
-    name: "workout",
-    description: "Checks workout of the day and returns exercises, sets/reps, and wieghts.",
-
-    async run(message, args, client) {
+module.exports = {
+	data: new SlashCommandBuilder()
+        .setName('workout')
+		.setDescription('Checks workout of the day and returns exercises, sets/reps, and wieghts.'),
+	async execute(interaction) {
         const workoutEmbdm = new EmbedBuilder()
         .setTitle('Workout of the day: Leg Day')
         .addFields(
@@ -21,8 +20,8 @@ module.exports = new Command({
             {name: 'Weight:', value: '155 175 175', inline: true},
 
         );
-        message.reply({embeds: [workoutEmbdm]});
-
-
-    }
-});
+        interaction.reply({
+            embeds: [workoutEmbdm]
+        });
+	},
+};
