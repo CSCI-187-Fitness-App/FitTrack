@@ -3,7 +3,7 @@ const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 module.exports = {
 	data: new SlashCommandBuilder()
         .setName('workout')
-		.setDescription('Checks workout of the day and returns exercises, sets/reps, and wieghts.'),
+		.setDescription('Displays your workout for the day.'),
 	async execute(interaction) {
         const workoutEmbdm = new EmbedBuilder()
         .setTitle('Workout of the day: Leg Day')
