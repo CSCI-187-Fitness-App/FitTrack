@@ -3,7 +3,7 @@ const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 module.exports = {
 	data: new SlashCommandBuilder()
         .setName('calendar')
-		.setDescription('Display image of a week calendar of your workouts.'),
+		.setDescription('Displays your weekly schedule of your workouts.'),
 	async execute(interaction) {
         let topline =    "-------------------------------\n";
         let bottomline = "\n-------------------------------";
