@@ -2,7 +2,7 @@ const { Events, ActionRowBuilder, SelectMenuBuilder } = require('discord.js');
 const Database = require('better-sqlite3');
 const reminder = require('../commands/reminder');
 
-const createTable = "CREATE TABLE IF NOT EXISTS reminder('userId' TEXT, 'sunday' INTEGER, 'monday' INTEGER, 'tuesday' INTEGER, 'wednesday' INTEGER, 'thursday' INTEGER, 'friday' INTEGER, 'saturday' INTEGER)";
+const createTable = "CREATE TABLE IF NOT EXISTS reminder('userId' TEXT, 'Sunday' INTEGER, 'Monday' INTEGER, 'Tuesday' INTEGER, 'Wednesday' INTEGER, 'Thursday' INTEGER, 'Friday' INTEGER, 'Saturday' INTEGER)";
 
 // create database if it doesn't exist (executes at runtime)
 const db = new Database('./databases/reminder.sqlite3', Database.OPEN_READWRITE, (err) => {
@@ -44,31 +44,31 @@ module.exports = {
 						.addOptions( 
 							{
 								label: 'Sunday',
-								value: 'sunday',
+								value: 'Sunday',
 							},
 							{
 								label: 'Monday',
-								value: 'monday',
+								value: 'Monday',
 							},
 							{
 								label: 'Tuesday',
-								value: 'tuesday',
+								value: 'Tuesday',
 							},
 							{
 								label: 'Wednesday',
-								value: 'wednesday',
+								value: 'Wednesday',
 							},
 							{
 								label: 'Thursday',
-								value: 'thursday',
+								value: 'Thursday',
 							},
 							{
 								label: 'Friday',
-								value: 'friday',
+								value: 'Friday',
 							},
 							{
 								label: 'Saturday',
-								value: 'saturday',
+								value: 'Saturday',
 							}
 						),
 				);
@@ -81,7 +81,7 @@ module.exports = {
 						components: []
 					});
 				} else {
-					db.exec("INSERT INTO reminder(userId, sunday, monday, tuesday, wednesday, thursday, friday, saturday)" +
+					db.exec("INSERT INTO reminder(userId, Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday)" +
 							`VALUES(${interaction.user.id}, 1, 1, 1, 1, 1, 1, 1)`
 					);
 					interaction.update({
@@ -136,32 +136,32 @@ module.exports = {
 				for(let i = 0; i < interaction.values.length; i++) {
 					const dayOfWeek = interaction.values[i];
 					switch(dayOfWeek) {
-						case "sunday":
+						case "Sunday":
 							days[0] = 1;
 							break;
-						case "monday":
+						case "Monday":
 							days[1] = 1;
 							break;
-						case "tuesday":
+						case "Tuesday":
 							days[2] = 1;
 							break;
-						case "wednesday":
+						case "Wednesday":
 							days[3] = 1;
 							break;
-						case "thursday":
+						case "Thursday":
 							days[4] = 1;
 							break;
-						case "friday":
+						case "Friday":
 							days[5] = 1;
 							break;
-						case "saturday":
+						case "Saturday":
 							days[6] = 1;
 							break;
 						default:
 							break;
 					}
 				}
-				db.exec("INSERT INTO reminder(userId, sunday, monday, tuesday, wednesday, thursday, friday, saturday)" +
+				db.exec("INSERT INTO reminder(userId, Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday)" +
 						`VALUES(${interaction.user.id}, ${days[0]}, ${days[1]}, ${days[2]}, ${days[3]}, ${days[4]}, ${days[5]}, ${days[6]})`
 						);
 				interaction.reply(`Reminders set for ${interaction.values.join(", ")}. :white_check_mark:`);
