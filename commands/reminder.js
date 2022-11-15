@@ -24,6 +24,10 @@ module.exports = {
 							label: 'Weekly',
 							value: 'weekly',
 						},
+                        {
+                            label: 'Disable Reminder',
+                            value: 'disable'
+                        }
                     )
             )
 
