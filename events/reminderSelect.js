@@ -2,7 +2,7 @@ const { Events, ActionRowBuilder, SelectMenuBuilder } = require('discord.js');
 const Database = require('better-sqlite3');
 const reminder = require('../commands/reminder');
 
-const createTable = "CREATE TABLE IF NOT EXISTS reminder('userId' TEXT, 'Sunday' INTEGER, 'Monday' INTEGER, 'Tuesday' INTEGER, 'Wednesday' INTEGER, 'Thursday' INTEGER, 'Friday' INTEGER, 'Saturday' INTEGER)";
+const createTable = "CREATE TABLE IF NOT EXISTS reminderTable('userId' TEXT, 'Sunday' INTEGER, 'Monday' INTEGER, 'Tuesday' INTEGER, 'Wednesday' INTEGER, 'Thursday' INTEGER, 'Friday' INTEGER, 'Saturday' INTEGER)";
 
 // create database if it doesn't exist (executes at runtime)
 const db = new Database('./databases/reminder.sqlite3', Database.OPEN_READWRITE, (err) => {
@@ -15,7 +15,7 @@ db.exec(createTable);
 
 // check if user id already exists in the reminder database
 const reminderExists = (id) => {
-	const data = db.prepare('SELECT * FROM reminder');
+	const data = db.prepare('SELECT * FROM reminderTable');
 	let flag = false;
 	for (const ch of data.iterate()) {
 		if (ch.userId === `${id}`) {
@@ -81,7 +81,7 @@ module.exports = {
 						components: []
 					});
 				} else {
-					db.exec("INSERT INTO reminder(userId, Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday)" +
+					db.exec("INSERT INTO reminderTable(userId, Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday)" +
 							`VALUES(${interaction.user.id}, 1, 1, 1, 1, 1, 1, 1)`
 					);
 					interaction.update({
@@ -114,7 +114,7 @@ module.exports = {
 						components: []
 					});
 				} else {
-					db.exec(`DELETE FROM reminder WHERE userId='${interaction.user.id}'`)
+					db.exec(`DELETE FROM reminderTable WHERE userId='${interaction.user.id}'`)
 					interaction.update({
 						content: `Reminder for ${interaction.user} has been removed.`,
 						//ephemeral: true,
@@ -161,7 +161,7 @@ module.exports = {
 							break;
 					}
 				}
-				db.exec("INSERT INTO reminder(userId, Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday)" +
+				db.exec("INSERT INTO reminderTable(userId, Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday)" +
 						`VALUES(${interaction.user.id}, ${days[0]}, ${days[1]}, ${days[2]}, ${days[3]}, ${days[4]}, ${days[5]}, ${days[6]})`
 						);
 				interaction.reply(`Reminders set for ${interaction.values.join(", ")}. :white_check_mark:`);
