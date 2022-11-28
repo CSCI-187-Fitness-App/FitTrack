@@ -22,8 +22,6 @@ module.exports = {
                 new SelectMenuBuilder()
                     .setCustomId('routineSelectDay')
                     .setPlaceholder('Choose day to place routine in')
-                    .setMinValues(1)
-                    .setMaxValues(7)
                     .addOptions( 
                         {
                             label: 'Sunday',
@@ -58,7 +56,7 @@ module.exports = {
             
             await interaction.reply({
                 content: "Select a day to place routine in.",
-                components: [type]
+                components: [days]
             });
 
 	}
