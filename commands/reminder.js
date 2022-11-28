@@ -33,7 +33,7 @@ module.exports = {
 
         await interaction.reply({
             content: "Select a type of reminder.",
-            //ephemeral: true,
+            ephemeral: true,
             components: [type]
         });
     }

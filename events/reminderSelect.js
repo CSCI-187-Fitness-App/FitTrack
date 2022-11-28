@@ -77,7 +77,7 @@ module.exports = {
 				if(reminderExists(interaction.user.id)) {
 					interaction.update({
 						content: `:exclamation: Reminder for ${interaction.user} has already been set. :exclamation:`,
-						//ephemeral: true,
+						ephemeral: true,
 						components: []
 					});
 				} else {
@@ -86,7 +86,7 @@ module.exports = {
 					);
 					interaction.update({
 						content: `Daily reminder for ${interaction.user} set. :white_check_mark:`,
-						//ephemeral: true,
+						ephemeral: true,
 						components: []
 					})
 				}
@@ -95,13 +95,13 @@ module.exports = {
 				if(reminderExists(interaction.user.id)) {
 					interaction.update({
 						content: `:exclamation: Reminder for ${interaction.user} has already been set. :exclamation:`,
-						//ephemeral: true,
+						ephemeral: true,
 						components: []
 					});
 				} else {
 					interaction.update({
 						content: "Select days.",
-						//ephemeral: true,
+						ephemeral: true,
 						components: [days]
 					});
 				}
@@ -117,7 +117,7 @@ module.exports = {
 					db.exec(`DELETE FROM reminderTable WHERE userId='${interaction.user.id}'`)
 					interaction.update({
 						content: `Reminder for ${interaction.user} has been removed.`,
-						//ephemeral: true,
+						ephemeral: true,
 						components: []
 					});
 				}
@@ -127,7 +127,7 @@ module.exports = {
 			if(reminderExists(interaction.user.id)) {
 				interaction.update({
 					content: `:exclamation: Reminder for ${interaction.user} has already been set. :exclamation:`,
-					//ephemeral: true,
+					ephemeral: true,
 					components: []
 				});
 			} else {

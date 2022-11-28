@@ -52,6 +52,7 @@ module.exports = {
             
             await interaction.reply({
                 content: "Select a day to place routine in.",
+                ephemeral: true,
                 components: [days]
             });
 	}
