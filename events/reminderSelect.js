@@ -81,8 +81,8 @@ module.exports = {
 						components: []
 					});
 				} else {
-					db.exec("INSERT INTO reminderTable(userId, Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday)" +
-							`VALUES(${interaction.user.id}, 1, 1, 1, 1, 1, 1, 1)`
+					db.exec("INSERT INTO reminderTable(userId, Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday) " +
+							`VALUES('${interaction.user.id}', 1, 1, 1, 1, 1, 1, 1)`
 					);
 					interaction.update({
 						content: `Daily reminder for ${interaction.user} set. :white_check_mark:`,
@@ -161,8 +161,8 @@ module.exports = {
 							break;
 					}
 				}
-				db.exec("INSERT INTO reminderTable(userId, Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday)" +
-						`VALUES(${interaction.user.id}, ${days[0]}, ${days[1]}, ${days[2]}, ${days[3]}, ${days[4]}, ${days[5]}, ${days[6]})`
+				db.exec("INSERT INTO reminderTable(userId, Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday) " +
+						`VALUES('${interaction.user.id}', ${days[0]}, ${days[1]}, ${days[2]}, ${days[3]}, ${days[4]}, ${days[5]}, ${days[6]})`
 						);
 				interaction.reply(`Reminders set for ${interaction.values.join(", ")}. :white_check_mark:`);
 			}	
