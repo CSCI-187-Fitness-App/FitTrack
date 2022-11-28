@@ -25,7 +25,10 @@ module.exports = {
 
             db.exec(`INSERT INTO user_${interaction.user.id}(Workouts) ` +
                     `VALUES('${exercise}')`);
-            await interaction.reply({ content: 'Your submission was received successfully!: ' + exercise });
+            await interaction.reply({ 
+                content: 'Your submission was received successfully!: ' + exercise,
+                ephemeral: true
+            });
         }
 	}
 }

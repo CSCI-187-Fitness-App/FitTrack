@@ -3,11 +3,7 @@
 //when entering their routine they should select a day then in a text box
 //enter what their workout is for that day
 const { 
-    
     ActionRowBuilder, 
-    //Events, 
-    //TextInputBuilder, 
-    //TextInputStyle,
     SlashCommandBuilder,
     SelectMenuBuilder
 } = require('discord.js');
@@ -56,8 +52,8 @@ module.exports = {
             
             await interaction.reply({
                 content: "Select a day to place routine in.",
+                ephemeral: true,
                 components: [days]
             });
-
 	}
 };
