@@ -56,7 +56,7 @@ module.exports = {
             
             await interaction.reply({
                 content: "Select a day to place routine in.",
-                components: [type]
+                components: [days]
             });
 
 	}
