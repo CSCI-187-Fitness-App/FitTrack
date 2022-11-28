@@ -110,7 +110,7 @@ module.exports = {
 				if(!reminderExists(interaction.user.id)) {
 					interaction.update({
 						content: `ERROR: ${interaction.user} does not currently have a reminder set.`,
-						//ephemeral: true,
+						ephemeral: true,
 						components: []
 					});
 				} else {
@@ -164,7 +164,11 @@ module.exports = {
 				db.exec("INSERT INTO reminderTable(userId, Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday) " +
 						`VALUES('${interaction.user.id}', ${days[0]}, ${days[1]}, ${days[2]}, ${days[3]}, ${days[4]}, ${days[5]}, ${days[6]})`
 						);
-				interaction.reply(`Reminders set for ${interaction.values.join(", ")}. :white_check_mark:`);
+				interaction.update({
+					content: `Reminders set for ${interaction.values.join(", ")}. :white_check_mark:`,
+					ephemeral: true,
+					components: []
+				});
 			}	
     	}
 	}
