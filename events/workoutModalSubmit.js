@@ -23,12 +23,32 @@ module.exports = {
 
             const exercise = interaction.fields.getTextInputValue("exerciseName");
 
-            db.exec(`INSERT INTO user_${interaction.user.id}(Workouts) ` +
-                    `VALUES('${exercise}')`);
-            await interaction.reply({ 
-                content: 'Your submission was received successfully!: ' + exercise,
-                ephemeral: true
-            });
+            const data = db.prepare(`SELECT * FROM user_${interaction.user.id}`);
+
+            let flag = false;
+
+            for(const ch of data.iterate()){
+                if(ch.Workouts == exercise){
+                    flag = true;
+                }
+            }
+
+            if(flag) {
+                await interaction.reply({
+                    content: `:exclamation: ERROR: \`${exercise}\` already exists.`,
+                    ephemeral: true,
+                    components: []
+                });
+            }
+            else {
+                db.exec(`INSERT INTO user_${interaction.user.id}(Workouts) ` +
+                        `VALUES('${exercise}')`);
+                await interaction.reply({ 
+                    content: `Exercise \`${exercise}\` has been added.`,
+                    ephemeral: true,
+                    components: []
+                });
+            }
         }
 	}
 }
