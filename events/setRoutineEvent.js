@@ -19,8 +19,6 @@ const workouts_db = new Database('./databases/workouts.sqlite3', Database.OPEN_R
     verbose: console.log
 });
 
-let daySelected;
-
 module.exports = {
     name: Events.InteractionCreate,
     async execute(interaction){
@@ -30,11 +28,11 @@ module.exports = {
 
         if(interaction.customId == "routineSelectDay"){
             //store the day selected
-            daySelected = interaction.values[0];
+            let daySelected = interaction.values[0];
             const data = workouts_db.prepare(`SELECT * FROM user_${interaction.user.id}`);
 
             const workoutsSelect = new SelectMenuBuilder()
-                .setCustomId('workoutsSelector')
+                .setCustomId(`workoutsSelector_${daySelected}`)
                 .setPlaceholder('Choose workouts to add to the day selected')
                 .setMinValues(1);
 
@@ -53,24 +51,26 @@ module.exports = {
 
             workoutsSelect.setMaxValues(workoutsCount);
 
-            const workoutsAction = new ActionRowBuilder()
-                .addComponents(workoutsSelect);
+            const workoutsAction = new ActionRowBuilder().addComponents(workoutsSelect);
 
-            await interaction.reply({
+            await interaction.update({
                 content: "Select workout to add to routine.",
+                ephemeral: true,
                 components: [workoutsAction]
             });
         }
-        else if(interaction.customId == "workoutsSelector"){
+        else if(interaction.customId.substring(0, 16) == "workoutsSelector"){
+            let day = interaction.customId.substring(17);
             calendar_db.exec(`CREATE TABLE IF NOT EXISTS user_${interaction.user.id}('Sunday' TEXT, 'Monday' TEXT, 'Tuesday' TEXT, 'Wednesday' TEXT, 'Thursday' TEXT, 'Friday' TEXT, 'Saturday' TEXT)`);
-            console.log(daySelected)
-            console.log(interaction.values)
             for(let i = 0; i < interaction.values.length; i++){
-                calendar_db.exec(`INSERT INTO user_${interaction.user.id}('${daySelected}')`+
+                calendar_db.exec(`INSERT INTO user_${interaction.user.id}('${day}')`+
                 `VALUES('${interaction.values[i]}')`);
             }
-
-            interaction.reply(`Workouts: ${interaction.values.join(", ")}. set for the day: ${daySelected}`);
+            interaction.update({
+                content: `Workouts \`${interaction.values.join(", ")}\` set for the day: ${day}`,
+                ephemeral: true,
+                components: []
+            });
         }
     }
 }
