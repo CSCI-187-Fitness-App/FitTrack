@@ -6,7 +6,7 @@
   "author": "CSCI 187 FitTrack Group Fall 2022",
   "license": "ISC",
   "dependencies": {
-    "better-sqlite3": "^7.6.2",
+    "better-sqlite3": "^8.0.0",
     "discord.js": "^14.6.0",
     "node-schedule": "^2.1.0",
     "nodemon": "^2.0.20"
