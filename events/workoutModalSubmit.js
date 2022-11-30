@@ -28,7 +28,7 @@ module.exports = {
             let flag = false;
 
             for(const ch of data.iterate()){
-                if(ch.Workouts == exercise){
+                if(ch.Workouts.toLowerCase() == exercise.toLowerCase()){
                     flag = true;
                 }
             }

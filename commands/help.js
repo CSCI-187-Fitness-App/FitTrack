@@ -26,6 +26,7 @@ module.exports = {
 
         interaction.reply({
             embeds: [helpEmb],
+            ephemeral: true
         });
     },
 };
