@@ -1,4 +1,12 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+const Database = require('better-sqlite3');
+
+const db = new Database('./databases/calendar.sqlite3', Database.OPEN_READWRITE, (err) => {
+    if (err) {
+        console.error(err.message);
+    }
+    verbose: console.log
+});
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -7,21 +15,47 @@ module.exports = {
 	async execute(interaction) {
         let topline =    "-------------------------------\n";
         let bottomline = "\n-------------------------------";
+
+        db.exec(
+            `CREATE TABLE IF NOT EXISTS user_${interaction.user.id}` +
+            `('Sunday' TEXT, 'Monday' TEXT, 'Tuesday' TEXT, 'Wednesday' TEXT, 'Thursday' TEXT, 'Friday' TEXT, 'Saturday' TEXT)`
+        );
+
         const calendarEmbed = new EmbedBuilder()
             .setColor(0x800020)
             .setTitle("Weekly View of workouts:")
-            .setDescription("\u200b")
-            .addFields(
-                {name: topline + "Monday" + bottomline, value:"- Flat Bench Press \n - Inclined Bench Press \n - Dumbell Fly \n - Tricep push downs \n - Bicep curls", inline: true},
-                {name: topline + "Tuesday" + bottomline, value: "Rest Day", inline: true},
-                {name: topline + "Wednesday" + bottomline, value: "Vinyasa Yoga", inline: true},
-                {name: topline + "Thursday" + bottomline, value: "Rest Day", inline: true},
-                {name: topline + "Friday" + bottomline, value: "- Deadlift \n - RDLs \n - Sitting rows \n - Lat pulldowns \n - Shoulder press", inline: true},
-                {name: topline + "Saturday" + bottomline, value: "Rest Day", inline: true},
-                {name: topline + "Sunday" + bottomline, value: "Rest Day", inline: true},
-            );
+            .setDescription("\u200b");
+
+        const weekdays = [];
+        weekdays.push("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday");
+
+        for(const day of weekdays) {
+            const data = db.prepare(
+                `SELECT DISTINCT ${day} ` +
+                `FROM user_${interaction.user.id}`
+                )   
+                .pluck()
+                .all()
+                .filter(n => n)
+                .join("\n");
+
+            if(data.length > 0) {
+                calendarEmbed.addFields({
+                    name: topline + `${day}` + bottomline,
+                    value: data,
+                    inline: true
+                });
+            } else {
+                calendarEmbed.addFields({
+                    name: topline + `${day}` + bottomline,
+                    value: "`Rest Day`",
+                    inline: true
+                });
+            }
+        }
         interaction.reply({
-            embeds: [calendarEmbed]
+            embeds: [calendarEmbed],
+            ephemeral: true
         });
 	},
 };

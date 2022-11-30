@@ -1,27 +1,57 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+const Database = require('better-sqlite3');
+
+const db = new Database('./databases/calendar.sqlite3', Database.OPEN_READWRITE, (err) => {
+    if (err) {
+        console.error(err.message);
+    }
+    verbose: console.log
+});
 
 module.exports = {
 	data: new SlashCommandBuilder()
         .setName('workout')
 		.setDescription('Displays your workout for the day.'),
 	async execute(interaction) {
-        const workoutEmbdm = new EmbedBuilder()
-        .setTitle('Workout of the day: Leg Day')
-        .addFields(
-            {name: 'Workout of the day:', value: 'Leg Day'},
-            {name: 'Excersise:', value: 'squats'},
-            {name: 'Sets/reps:', value: '3/6', inline: true},
-            {name: 'Weight:', value: '135 155 155', inline: true},
-            {name: 'Excersise:', value: 'calf raises'},
-            {name: 'Sets/reps:', value: '3/6', inline: true},
-            {name: 'Weight:', value: '135 155 155', inline: true},
-            {name: 'Excersise:', value: 'RDL'},
-            {name: 'Sets/reps:', value: '3/8', inline: true},
-            {name: 'Weight:', value: '155 175 175', inline: true},
-
+        db.exec(
+            `CREATE TABLE IF NOT EXISTS user_${interaction.user.id}` +
+            `('Sunday' TEXT, 'Monday' TEXT, 'Tuesday' TEXT, 'Wednesday' TEXT, 'Thursday' TEXT, 'Friday' TEXT, 'Saturday' TEXT)`
         );
-        interaction.reply({
-            embeds: [workoutEmbdm]
-        });
+
+        const weekday = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+        const month = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+        const d = new Date();
+        let day = weekday[d.getDay()];
+        let monthName = month[d.getMonth()];
+
+        const workoutEmbdm = new EmbedBuilder()
+            .setTitle(`${day}, ${monthName} ${d.getDate()}`);
+
+        const data = db.prepare(
+            `SELECT DISTINCT ${day} ` +
+            `FROM user_${interaction.user.id}`
+            )   
+            .pluck()
+            .all()
+            .filter(n => n)
+            .join("\n");
+
+        if(data.length > 0) {
+            workoutEmbdm.addFields({
+                name: "Workouts:",
+                value: data,
+                inline: false
+            });
+
+            interaction.reply({
+                embeds: [workoutEmbdm],
+                ephemeral: true
+            });
+        } else {
+            interaction.reply({
+                content: `Today (${day}) is a rest day. (*No routine set for today.*)`,
+                ephemeral: true
+            });
+        }
 	},
 };

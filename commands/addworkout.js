@@ -3,7 +3,7 @@ const { SlashCommandBuilder, ActionRowBuilder, Events, ModalBuilder, TextInputBu
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('addworkout')
-        .setDescription('add a workout to routines database'),
+        .setDescription('Add a workout to your personal database.'),
     async execute(interaction){
         if(interaction.setCustomId == "exerciseModal"){
             await CommandInteractionOptionResolver.reply({content: "Submitted"});
