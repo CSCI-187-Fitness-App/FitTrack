@@ -1,40 +1,89 @@
 const { 
     ActionRowBuilder, 
-    SelectMenuBuilder, 
+    ButtonBuilder, 
+    ButtonStyle,
     SlashCommandBuilder, 
 } = require('discord.js');
+const Database = require('better-sqlite3');
+
+// create database if it doesn't exist (executes at runtime)
+const db = new Database('./databases/reminder.sqlite3', Database.OPEN_READWRITE, (err) => {
+    if (err) {
+        console.error(err.message);
+    }
+    verbose: console.log
+});
+db.exec("CREATE TABLE IF NOT EXISTS reminderTable('userId' TEXT, 'Sunday' INTEGER, 'Monday' INTEGER, 'Tuesday' INTEGER, 'Wednesday' INTEGER, 'Thursday' INTEGER, 'Friday' INTEGER, 'Saturday' INTEGER)");
+
+// check if user id already exists in the reminder database
+const reminderExists = (id) => {
+	const data = db.prepare('SELECT * FROM reminderTable');
+	let flag = false;
+	for (const ch of data.iterate()) {
+		if (ch.userId === `${id}`) {
+			flag = true;
+			break;
+		}
+	}
+	return flag;
+}
 
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('reminder')
 		.setDescription('Set a daily or weekly reminder.'),
 	async execute(interaction) {
-		
-        const type = new ActionRowBuilder()
-            .addComponents(
-                new SelectMenuBuilder()
-                    .setCustomId('reminderSelect')
-                    .setPlaceholder('Choose type of reminder')
-                    .addOptions(
-                        {
-							label: 'Daily',
-							value: 'daily',
-						},
-                        {
-							label: 'Weekly',
-							value: 'weekly',
-						},
-                        {
-                            label: 'Disable Reminder',
-                            value: 'disable'
-                        }
-                    )
-            )
+        const reminderButtons = new ActionRowBuilder();
 
-        await interaction.reply({
-            content: "Select a type of reminder.",
-            ephemeral: true,
-            components: [type]
-        });
+        if(reminderExists(interaction.user.id)) {
+            reminderButtons.addComponents(
+                new ButtonBuilder()
+                    .setCustomId('disableReminderButton')
+                    .setLabel('Disable')
+                    .setStyle(ButtonStyle.Danger)
+            );
+            const data = db.prepare(`SELECT * FROM reminderTable WHERE userId='${interaction.user.id}'`);
+            let days = [];
+            for(const ch of data.iterate()) {
+                if(ch.Monday == 1)
+                    days.push("Monday");
+                if(ch.Tuesday == 1)
+                    days.push("Tuesday");
+                if(ch.Wednesday == 1)
+                    days.push("Wednesday");
+                if(ch.Thursday == 1)
+                    days.push("Thursday");
+                if(ch.Friday == 1)
+                    days.push("Friday");
+                if(ch.Saturday == 1)
+                    days.push("Saturday");
+                if(ch.Sunday == 1)
+                    days.push("Sunday");
+            }
+            await interaction.reply({
+                content: `You currently have reminders set for \`${days.join(", ")}\``,
+                ephemeral: true,
+                components: [reminderButtons]
+            })
+        } else {
+            reminderButtons.addComponents(
+                new ButtonBuilder()
+                    .setCustomId('dailyReminderButton')
+                    .setLabel('Daily')
+                    .setStyle(ButtonStyle.Primary)
+            );
+            reminderButtons.addComponents(
+                new ButtonBuilder()
+                    .setCustomId('weeklyReminderButton')
+                    .setLabel('Weekly')
+                    .setStyle(ButtonStyle.Primary)
+            );
+
+            await interaction.reply({
+                content: "Select a type of reminder.",
+                ephemeral: true,
+                components: [reminderButtons]
+            });
+        }
     }
 };
