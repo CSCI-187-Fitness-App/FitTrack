@@ -44,13 +44,18 @@ module.exports = {
             });
 
             interaction.reply({
-                embeds: [workoutEmbdm],
-                ephemeral: true
+                ephemeral: true,
+                embeds: [workoutEmbdm]
             });
         } else {
+            workoutEmbdm.addFields({
+                name: "Rest Day",
+                value: `*(No routine for ${day} has been set)*`,
+                inline: false
+            });
             interaction.reply({
-                content: `Today (${day}) is a rest day. (*No routine set for today.*)`,
-                ephemeral: true
+                ephemeral: true,
+                embeds: [workoutEmbdm]
             });
         }
 	},
