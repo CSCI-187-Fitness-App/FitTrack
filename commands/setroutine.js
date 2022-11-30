@@ -28,7 +28,7 @@ module.exports = {
 
         if(empty == 0) {
             await interaction.reply({
-                content: ":warning: ERROR: no workouts detected. Use \`/addworkout\` to add a workout. :warning:",
+                content: ":warning: ERROR: no workouts detected. Use `/addworkout` to add a workout. :warning:",
                 ephemeral: true,
             });
         } else {

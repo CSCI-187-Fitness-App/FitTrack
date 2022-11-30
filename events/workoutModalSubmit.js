@@ -35,7 +35,7 @@ module.exports = {
 
             if(flag) {
                 await interaction.reply({
-                    content: `:exclamation: ERROR: \`${exercise}\` already exists.`,
+                    content: `:warning: ERROR: \`${exercise}\` already exists. :warning:`,
                     ephemeral: true,
                     components: []
                 });
