@@ -7,7 +7,7 @@ module.exports = {
         rule.hour = 9;
         rule.minute = 0;
         rule.tz = 'Etc/GMT-8';
-        const createTable = "CREATE TABLE IF NOT EXISTS reminder('userId' TEXT, 'Sunday' INTEGER, 'Monday' INTEGER, 'Tuesday' INTEGER, 'Wednesday' INTEGER, 'Thursday' INTEGER, 'Friday' INTEGER, 'Saturday' INTEGER)";
+        const createTable = "CREATE TABLE IF NOT EXISTS reminderTable('userId' TEXT, 'Sunday' INTEGER, 'Monday' INTEGER, 'Tuesday' INTEGER, 'Wednesday' INTEGER, 'Thursday' INTEGER, 'Friday' INTEGER, 'Saturday' INTEGER)";
         const job = schedule.scheduleJob(rule, function () {
             const d = new Date();
             const weekday = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
@@ -20,7 +20,7 @@ module.exports = {
             });
             db.exec(createTable);
         
-            const data = db.prepare(`SELECT userId FROM reminder WHERE ${weekday[d.getDay()]}=1`);
+            const data = db.prepare(`SELECT userId FROM reminderTable WHERE ${weekday[d.getDay()]}=1`);
             for (const ch of data.iterate()) { // DM all users with reminders set on current day
                 client.users.send(`${ch.userId}`, `:man_lifting_weights: This is your ${weekday[d.getDay()]} reminder to go workout! :woman_lifting_weights:`);
             }
