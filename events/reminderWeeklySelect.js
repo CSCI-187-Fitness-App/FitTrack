@@ -72,11 +72,29 @@ module.exports = {
                 db.exec("INSERT INTO reminderTable(userId, Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday) " +
                         `VALUES('${interaction.user.id}', ${days[0]}, ${days[1]}, ${days[2]}, ${days[3]}, ${days[4]}, ${days[5]}, ${days[6]})`
                         );
-                interaction.update({
-                    content: `Reminders set for \`${interaction.values.join(", ")}\` :white_check_mark:`,
-                    ephemeral: true,
-                    components: []
-                });
+                
+                let len = days.reduce((a, b) => a + b, 0);
+                if(len == 1) {
+                    interaction.update({
+                        content: `Reminder set for \`${interaction.values.join(", ")}\` :white_check_mark:`,
+                        ephemeral: true,
+                        components: []
+                    });
+                } else if (len == 2) {
+                    interaction.update({
+                        content: `Reminders set for \`${interaction.values[0]} and ${interaction.values[1]}\` :white_check_mark:`,
+                        ephemeral: true,
+                        components: []
+                    });
+                } else {
+                    let dayName = interaction.values;
+                    let last = dayName.pop();
+                    interaction.update({
+                        content: `Reminders set for \`${dayName.join(", ")}, and ${last}\` :white_check_mark:`,
+                        ephemeral: true,
+                        components: []
+                    });
+                }
             }	
         }
     }

@@ -10,8 +10,8 @@ const db = new Database('./databases/calendar.sqlite3', Database.OPEN_READWRITE,
 
 module.exports = {
 	data: new SlashCommandBuilder()
-        .setName('workout')
-		.setDescription('Displays your workout for the day.'),
+        .setDescription('Displays your workout for the day.')
+        .setName('workout'),
 	async execute(interaction) {
         db.exec(
             `CREATE TABLE IF NOT EXISTS user_${interaction.user.id}` +
@@ -25,6 +25,7 @@ module.exports = {
         let monthName = month[d.getMonth()];
 
         const workoutEmbdm = new EmbedBuilder()
+            .setColor(0x800020)
             .setTitle(`${day}, ${monthName} ${d.getDate()}`);
 
         const data = db.prepare(
