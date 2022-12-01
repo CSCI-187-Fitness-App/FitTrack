@@ -60,11 +60,28 @@ module.exports = {
                 if(ch.Sunday == 1)
                     days.push("Sunday");
             }
-            await interaction.reply({
-                content: `You currently have reminders set for \`${days.join(", ")}\``,
-                ephemeral: true,
-                components: [reminderButtons]
-            })
+            if(days.length == 1) {
+                await interaction.reply({
+                    content: `You currently have a reminder set for \`${days[0]}\``,
+                    ephemeral: true,
+                    components: [reminderButtons]
+                })
+            }
+            else if(days.length == 2) {
+                await interaction.reply({
+                    content: `You currently have reminders set for \`${days[0]} and ${days[1]}\``,
+                    ephemeral: true,
+                    components: [reminderButtons]
+                })
+            }
+            else {
+                let last = days.pop();
+                await interaction.reply({
+                    content: `You currently have reminders set for \`${days.join(", ")}, and ${last}\``,
+                    ephemeral: true,
+                    components: [reminderButtons]
+                })
+            }
         } else {
             reminderButtons.addComponents(
                 new ButtonBuilder()
