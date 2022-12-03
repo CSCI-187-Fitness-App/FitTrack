@@ -25,7 +25,7 @@ module.exports = {
         let monthName = month[d.getMonth()];
 
         const workoutEmbdm = new EmbedBuilder()
-            .setColor(0x800020)
+            .setColor('White')
             .setTitle(`${day}, ${monthName} ${d.getDate()}`);
 
         const data = db.prepare(
