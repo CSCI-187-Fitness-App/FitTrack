@@ -22,7 +22,7 @@ module.exports = {
         );
 
         const calendarEmbed = new EmbedBuilder()
-            .setColor(0x800020)
+            .setColor('White')
             .setTitle("Weekly View of workouts:")
             .setDescription("\u200b");
 

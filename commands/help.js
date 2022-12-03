@@ -9,7 +9,7 @@ module.exports = {
         const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 
         const helpEmb = new EmbedBuilder()
-            .setColor(0x800020)
+            .setColor('White')
             .setTitle("Commands")
             .setDescription("\u200b")
 
