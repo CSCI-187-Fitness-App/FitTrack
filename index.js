@@ -4,14 +4,21 @@ const fs = require('node:fs');
 const path = require('node:path');
 const schedule = require('node-schedule');
 const Database = require('better-sqlite3');
-const { Client, Collection, EmbedBuilder, GatewayIntentBits } = require('discord.js');
+const { Client, Collection, EmbedBuilder, GatewayIntentBits, IntentsBitField } = require('discord.js');
 const { token } = require('./config.json');
 
 // redeploy commands automatically each time bot is reset
 deploy.deployCommands();
 
 // Create a new client instance
-const client = new Client({ intents: [GatewayIntentBits.Guilds] });
+const client = new Client({ 
+	intents: [
+		GatewayIntentBits.Guilds,
+		IntentsBitField.Flags.DirectMessages,
+        IntentsBitField.Flags.DirectMessageReactions,
+		IntentsBitField.Flags.DirectMessageTyping,
+	] 
+});
 exports.client = client;
 
 const eventsPath = path.join(__dirname, 'events');

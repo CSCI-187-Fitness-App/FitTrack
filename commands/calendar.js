@@ -13,12 +13,13 @@ module.exports = {
         .setName('calendar')
 		.setDescription('Displays your weekly schedule of your workouts.'),
 	async execute(interaction) {
-        let topline =    "-------------------------------\n";
-        let bottomline = "\n-------------------------------";
+        let topline =    "---------------------------\n";
+        let bottomline = "\n---------------------------";
 
         db.exec(
             `CREATE TABLE IF NOT EXISTS user_${interaction.user.id}` +
-            `('Sunday' TEXT, 'Monday' TEXT, 'Tuesday' TEXT, 'Wednesday' TEXT, 'Thursday' TEXT, 'Friday' TEXT, 'Saturday' TEXT)`
+            `(id integer primary key autoincrement, 'Sunday' TEXT, 'Monday' TEXT, ` +
+            `'Tuesday' TEXT, 'Wednesday' TEXT, 'Thursday' TEXT, 'Friday' TEXT, 'Saturday' TEXT)`
         );
 
         const calendarEmbed = new EmbedBuilder()

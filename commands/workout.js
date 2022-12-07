@@ -15,7 +15,7 @@ module.exports = {
 	async execute(interaction) {
         db.exec(
             `CREATE TABLE IF NOT EXISTS user_${interaction.user.id}` +
-            `('Sunday' TEXT, 'Monday' TEXT, 'Tuesday' TEXT, 'Wednesday' TEXT, 'Thursday' TEXT, 'Friday' TEXT, 'Saturday' TEXT)`
+            `(id integer primary key autoincrement, 'Sunday' TEXT, 'Monday' TEXT, 'Tuesday' TEXT, 'Wednesday' TEXT, 'Thursday' TEXT, 'Friday' TEXT, 'Saturday' TEXT)`
         );
 
         const weekday = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];

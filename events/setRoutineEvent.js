@@ -58,13 +58,27 @@ module.exports = {
                 ephemeral: true,
                 components: [workoutsAction]
             });
-        }
-        else if(interaction.customId.substring(0, 16) == "workoutsSelector"){
+        } else if(interaction.customId.substring(0, 16) == "workoutsSelector"){
             let day = interaction.customId.substring(17);
-            calendar_db.exec(`CREATE TABLE IF NOT EXISTS user_${interaction.user.id}('Sunday' TEXT, 'Monday' TEXT, 'Tuesday' TEXT, 'Wednesday' TEXT, 'Thursday' TEXT, 'Friday' TEXT, 'Saturday' TEXT)`);
+            calendar_db.exec(
+                `CREATE TABLE IF NOT EXISTS user_${interaction.user.id}` +
+                `(id integer primary key autoincrement, 'Sunday' TEXT, 'Monday' TEXT, ` +
+                `'Tuesday' TEXT, 'Wednesday' TEXT, 'Thursday' TEXT, 'Friday' TEXT, 'Saturday' TEXT)`
+            );
             for(let i = 0; i < interaction.values.length; i++){
-                calendar_db.exec(`INSERT INTO user_${interaction.user.id}('${day}')`+
-                `VALUES('${interaction.values[i]}')`);
+                const firstNull = calendar_db.prepare(`SELECT id FROM user_${interaction.user.id} WHERE ${day} IS NULL`).pluck().all();
+                if(firstNull.length > 0) {
+                    calendar_db.exec(
+                        `UPDATE user_${interaction.user.id} ` +
+                        `SET ${day} = '${interaction.values[i]}' ` +
+                        `WHERE id = ${firstNull[0]}`
+                    );
+                } else {
+                    calendar_db.exec(
+                        `INSERT INTO user_${interaction.user.id}('${day}') `+
+                        `VALUES('${interaction.values[i]}')`
+                    );
+                }
             }
             interaction.update({
                 content: `Workouts \`${interaction.values.join(", ")}\` set for the day: ${day}`,
