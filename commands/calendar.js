@@ -33,7 +33,8 @@ module.exports = {
         for(const day of weekdays) {
             const data = db.prepare(
                 `SELECT DISTINCT ${day} ` +
-                `FROM user_${interaction.user.id}`
+                `FROM user_${interaction.user.id} ` +
+                `ORDER BY ${day} ASC`
                 )   
                 .pluck()
                 .all()
