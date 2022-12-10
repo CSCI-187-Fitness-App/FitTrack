@@ -18,17 +18,14 @@ module.exports = {
         }
 
         if(interaction.customId === 'prModal'){
-            db.exec(`CREATE TABLE IF NOT EXISTS user_${interaction.user.id}('userID' TEXT, 'Workouts' TEXT, 'Dates' TEXT, 'Weights' TEXT)`);
+            db.exec(`CREATE TABLE IF NOT EXISTS user_${interaction.user.id}('Workout' TEXT, 'Date' TEXT, 'Weight' TEXT)`);
 
             const exercise = interaction.fields.getTextInputValue("exerciseName");
             const day = interaction.fields.getTextInputValue("prDate");
             const amount = interaction.fields.getTextInputValue("prAmount");
 
-
-            const data = db.prepare(`SELECT * FROM user_${interaction.user.id}`);
-
-            db.exec(`INSERT INTO user_${interaction.user.id}(userID, Workouts, Dates, Weights) ` +
-                        `VALUES('${interaction.user.id}','${exercise}','${day}','${amount}')`);
+            db.exec(`INSERT INTO user_${interaction.user.id}(Workout, Date, Weight) ` +
+                    `VALUES('${exercise}','${day}','${amount}')`);
                 await interaction.reply({ 
                     content: `PR for \`${exercise}\` has been added with weight value \`${amount}\`.`,
                     ephemeral: true,
