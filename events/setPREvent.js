@@ -17,8 +17,8 @@ module.exports = {
             return;
         }
 
-        if(interaction.customID === 'prModal'){
-            db.exec(`CREATE TABLE IF NOT EXISTS user_${interaction.user.id}('Workouts' TEXT)`);
+        if(interaction.customId === 'prModal'){
+            db.exec(`CREATE TABLE IF NOT EXISTS user_${interaction.user.id}('userID' TEXT, 'Workouts' TEXT, 'Dates' TEXT, 'Weights' TEXT)`);
 
             const exercise = interaction.fields.getTextInputValue("exerciseName");
             const day = interaction.fields.getTextInputValue("prDate");
@@ -30,7 +30,7 @@ module.exports = {
             db.exec(`INSERT INTO user_${interaction.user.id}(userID, Workouts, Dates, Weights) ` +
                         `VALUES('${interaction.user.id}','${exercise}','${day}','${amount}')`);
                 await interaction.reply({ 
-                    content: `Exercise \`${exercise}\` has been added.`,
+                    content: `PR for \`${exercise}\` has been added with weight value \`${amount}\`.`,
                     ephemeral: true,
                     components: []
             });
