@@ -45,27 +45,13 @@ module.exports = {
             db.exec(`UPDATE streaks SET Streak = 1 WHERE User = ${interaction.user.id}`);
             response = `Oops, you missed a day or a few. Your streak has been reset to 1`
         }
-
-
-        
         
         const sent = await interaction.reply({ 
 			content: response, 
 			ephemeral: true,
 			fetchReply: true 
 		});
-
-        
-
-        
-
-
-
 	}
 };
 
-
-//Other part of streak to send daily checkins
-  
- 
- 
+// TODO: other part of streak to send daily checkins
